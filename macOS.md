@@ -151,3 +151,17 @@ brew install --cask visual-studio-code
 ```
 
 关于 VSCode 更多的使用方法，参见 [VSCode](./VSCode.md)。
+
+## Automake 与 CMake
+
+Automake 是 GNU 项目的组成部分。这是一个用于通过配置自动生成 Makefile 的工具，还有许多其他类似功能的软件，它们被称为自动化构建系统。这个工具目前已经事实上处于弃用状态，你只能在某些较老的软件内看到它的身影。通过以下命令可以安装 Automake。
+
+```zsh
+brew install automake
+```
+
+目前广泛使用的 C/C++ 构建系统是 CMake。通过以下命令可以安装命令行版本的 CMake（不推荐 GUI 版本）。
+
+```zsh
+brew install cmake
+```
