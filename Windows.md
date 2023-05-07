@@ -2,7 +2,7 @@
 
 作为最常用的桌面操作系统，Windows 10 在开发者体验方面有了长足进步，强烈建议将 Windows 升级至 19041 (2004) 及以上。
 
-可以通过 `win+R` 唤起“运行”窗口，输入 `winver` 并确定后会弹出窗口，在这里你可以确认你的 Windows 版本。
+可以通过 `Win+R` 唤起“运行”窗口，输入 `winver` 并确定后会弹出窗口，在这里你可以确认你的 Windows 版本。
 
 <img width="383" alt="image" src="./image/winver.jpg">
 
@@ -12,7 +12,7 @@ Windows 11 随附了 [Windows Terminal](https://github.com/microsoft/terminal)�
 
 <img width="375" alt="image" src="./image/wt.jpg">
 
-通常，我们建议将其固定到任务栏并使用 `win+number` 快捷键呼出终端。
+通常，我们建议将其固定到任务栏并使用 `Win+Number` 快捷键呼出终端。
 
 ## WinGet
 
