@@ -36,7 +36,7 @@ winget upgrade Microsoft.WindowsTerminal
 
 来将 Windows Terminal 更新到最新版本。
 
-你可以通过使用 `winget search <package>` 来搜索你想要安装的软件的名称。例如 `winget search cmake`，你可以得到结果
+你可以通过使用 `winget search <package>` 来搜索你想要安装的软件的名称。例如 `winget search cmake`
 
 ```PowerShell
 winget search cmake
@@ -153,7 +153,7 @@ Python 2    Python.Python.2     2.7.18150   Tag: python3     winget
 winget install Python.Python.3.11
 ```
 
-安装完成后，在终端输入 `py`，若未提示报错，且正常进入了 Python 命令交互界面，说明安装正常完成了。
+安装完成后，在终端输入 `py`，若未提示报错，且正常进入了 Python 命令行交互界面，说明安装正常完成了。
 
 ```PowerShell
 py
