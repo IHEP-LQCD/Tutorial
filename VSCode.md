@@ -9,12 +9,14 @@ Visual Studio Code 是微软主导开发的一款开源文本编辑器。其最�
 在使用 ihep / csns 这些集群时，偶尔会出现 远程server崩溃 / 无限重连的问题。
 
 可能原因及处理：
- - ```~/.vscode-server``` 没有写入权限。比如 ihep 集群的用户文件夹就需要手动二次验证开启。或者写入文件达到上限。这种情况建议把.```vscode-server```翻到：
+
+- `~/.vscode-server` 没有写入权限。比如 ihep 集群的用户文件夹就需要手动二次验证开启。或者写入文件达到上限。这种情况建议把 `.vscode-server` 翻到：
+
     ```bash
-        mv ~/.vscode-server 工作区目录/.vscode-server
-        ls -s 工作区目录/.vscode-server ~/.vscode-server
+        mv ~/.vscode-server {workdir}/.vscode-server
+        ls -s {workdir}/.vscode-server ~/.vscode-server
     ```
- - 系统中已经存在另外一个 VSCode 进程。处理：可以停止用户进程 ```kill -9 -1```，后重新登录。
 
+- 系统中已经存在另外一个 VSCode 进程。处理：可以停止用户进程 `kill -9 -1`，后重新登录。
 
-> **提示：** 如果以上解决不了，你急了的话，可以 ```rm -rf ~/.vscode-server```, 后重新登录安装 vscode-server.
+> **提示：** 如果以上解决不了，你急了的话，可以 `rm -rf ~/.vscode-server`, 后重新登录安装 vscode-server.

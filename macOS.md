@@ -123,6 +123,12 @@ It was migrated from homebrew/cask to homebrew/core.
 brew install python@3.11
 ```
 
+像这样这类通过 `@` 提供了多个版本的软件，通常还存在一个“默认版本”，通过不添加版本号来安装这个版本。
+
+```zsh
+brew install python
+```
+
 安装完成后，在终端输入 `python3`，你应该看到命令行交互界面显示的版本出现了改变。
 
 ```zsh
