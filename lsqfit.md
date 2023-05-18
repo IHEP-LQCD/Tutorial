@@ -1,5 +1,12 @@
 # gvar 及其拟合工具lsqfit
 
+## 安装
+``` bash
+pip install gvar
+pip install lsqfit
+```
+> **For Windows users:** 安装过程中如果报错缺少 MSVC 依赖, 请到 [Visual Studio](https://visualstudio.microsoft.com/) 安装，需要至少含有 ```MSVC C++ tools``` 和 ```Windows 11/10 SDK``` 两项（详见[Visual Studio](./Windows.md)）。
+
 ## gvar简介
 
 格点计算结果需要同时体现均值和偏差，gvar模组提供了处理高斯型随机变量的工具，详细内容可以查阅[官方文档](https://gvar.readthedocs.io/en/latest)
