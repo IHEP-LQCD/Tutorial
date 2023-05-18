@@ -7,7 +7,7 @@
 - C语言于1969年至1973年间，为了移植与开发UNIX操作系统，由Dennis Ritchie与Ken Thompson，以B语言为基础，在贝尔实验室设计、开发出来。
 - C 语言于 1969 年至 1973 年间，为了移植与开发 UNIX 操作系统，由 Dennis Ritchie 与 Ken Thompson，以 B 语言为基础，在贝尔实验室设计、开发出来。
 
-我们提议你在为此项目做出贡献时，可以适当地在中文和英文/数字之间添加空格，更详细的规则见[中文文案排版指北](https://github.com/mzlogin/chinese-copywriting-guidelines#%E7%A9%BA%E6%A0%BC)“空格”部分。
+我们提议你在为此项目做出贡献时，可以适当地在中文和英文/数字之间添加空格，更详细的规则见[中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines/blob/master/README.zh-Hans.md#%E7%A9%BA%E6%A0%BC)“空格”部分。
 
 ## 1. 操作系统和软件准备
 
@@ -20,6 +20,7 @@
 - [macOS](./macOS.md)
 - [WSL](./WSL.md)
 - [Git](./Git.md)
+- [Automake & CMake](./CMake.md)
 - [VSCode](./VSCode.md)
 
 ## 2. Linux 集群
@@ -40,7 +41,6 @@ Linux 集群是我们实际上进行计算时使用的环境，它们搭载了�
 
 下面的内容大致介绍了编译系统，QDP，Chroma 和 QUDA，以及以它们为基础编写扩展的方法。
 
-- [Automake & CMake](./CMake.md)
 - [QMP & QDPXX & QDP-JIT](./QDP.md)
 - [Chroma](./Chroma.md)
 - [QUDA](./QUDA.md)
