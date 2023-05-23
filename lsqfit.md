@@ -13,13 +13,16 @@ pip install lsqfit
 
 格点计算结果需要同时体现均值和偏差，gvar 模组提供了处理高斯型随机变量的工具，详细内容可以查阅 [官方文档](https://gvar.readthedocs.io/en/latest)
 
-通过下面的代码可以创建一个 `gvar.Gvar` 对象，这里 x 表示均值为 1，标准偏差为 0.2 的高斯型随机变量,直接用 `x()` 可以根据给定高斯分布参数抽取一个随机变量。
+通过下面的代码可以创建一个 `gvar.Gvar` 对象，这里 x 表示均值为 1，标准偏差为 0.2 的高斯型随机变量,直接用 `x()` 或 'gvar.boostrap_iter' 可以根据给定高斯分布参数抽取一个随机变量。
 
 ```python
 import numpy as np
 import gvar as gv
 x = gv.gvar(1,0.2)
 print(x.mean, '+-', x.sdev)  # output: 1+-0.2
+
+for i in range(10):
+    print(x())
 ```
 
 我们还可以直接通过数据集创建 `gvar.Gvar` 对象。
@@ -63,14 +66,60 @@ print(w - z)  # output: 1(0)
 本文只以一个简单拟合程序来说明其基本使用方式。
 
 ```python
-import random
 import numpy as np
 import gvar as gv
 import lsqfit
 
-Nt = 128
-timeArray = np.arrange(128)
-yArray
-for nt in timeArray:
+Nt =128
+
+def setData():
+    def func(x,p):
+        return p['w']*np.cosh(p['h']*(x-Nt/2)/6.894) +p['w2']*np.cosh(p['h2']*(x-Nt/2)/6.894)
+
+    xData= np.arange(8,15)
+    prior = {}
+    prior['w'] = gv.gvar(2,1)
+    prior['h'] =gv.gvar(3.8,0.1)
+    prior['w2'] = gv.gvar(0.1,1)
+    prior['h2'] =gv.gvar(4.5,10)
+    yData = gv.gvar(['34.67(18)' ,'16.489(93)', '7.910(49)','3.884(26)', '1.861(14)' ,'0.9110(75)' ,'0.4476(40)'])
+
+    return xData,yData,func,prior
+
+if __name__ =='__main__':
+    xData,yData,func,prior =setData() 
+    fit = lsqfit.nonlinear_fit(data=(xData,yData),fcn=func,prior=prior)
+    print(fit.format(maxline=True))
+```
+
+在上面的例子中，lsqfit.nonlinear_fit 得到一个 `lsqfit.nonlinear_fit` 对象。拟合得到的结果都可以在 fit.format 中找到。上面的代码得到的结果如下所示：
+```
+Least Square Fit:
+  chi2/dof [dof] = 2.5 [7]    Q = 0.016    logGBF = -225.8
+
+Parameters:
+              w                          2.95(35)e-14                 [  2.0 (1.0) ]  *
+              h   3.9712361677636982548733612930 (43)                 [  3.80 (10) ]  *
+             w2                         8.038(69)e-17                 [  0.1 (1.0) ]  
+             h2   5.0774354372295347204158133536 (13)                 [     4 (10) ]  
+
+Fit:
+     x[k]           y[k]      f(x[k],p)
+---------------------------------------
+        8     34.67 (18)     34.33 (12)  *
+        9    16.489 (93)    16.562 (50)  
+       10     7.910 (49)     8.000 (21)  *
+       11     3.884 (26)    3.8702 (99)  
+       12     1.861 (14)    1.8753 (60)  *
+       13    0.9110 (75)    0.9104 (40)  
+       14    0.4476 (40)    0.4429 (27)  *
+
+Settings:
+  svdcut/n = 1e-12/0    tol = (1e-08*,1e-10,1e-10)    (itns/time = 213/0.0)
+  fitter = scipy_least_squares    method = trf
 
 ```
+第一部分是用于评价拟合质量的参数，第二部分是拟合得到的参数，后面的一个 * 代表期望值与数据相差一个 $\sigma$
+
+
+
