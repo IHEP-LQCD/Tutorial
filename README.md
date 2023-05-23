@@ -15,13 +15,12 @@
 
 下面的内容大致介绍了各个操作系统下你需要准备的工具和软件，包括包管理工具，终端，Git，Python，C/C++ 编译器和构建系统，文本编辑器，以及一些重要软件简单使用方法。
 
-- [Linux](./Linux.md)
+- [**Linux**](./Linux.md)
 - [Windows](./Windows.md)
 - [macOS](./macOS.md)
-- [WSL](./WSL.md)
 - [Git](./Git.md)
-- [Automake & CMake](./CMake.md)
 - [VSCode](./VSCode.md)
+- [C/C++](./C++.md)
 
 ## 2. Linux 集群
 
@@ -30,6 +29,7 @@ Linux 集群是我们实际上进行计算时使用的环境，它们搭载了�
 下面的内容大致介绍了在 Linux 集群中常用的环境管理软件，MPI 和任务调度系统。关于 Linux 的普通操作说明，请参阅上一节相应内容。
 
 - [Module](./Module.md)
+- [Automake & CMake](./CMake.md)
 - [MPI](./MPI.md)
 - [Slurm](./Slurm.md)
 
@@ -51,6 +51,6 @@ Linux 集群是我们实际上进行计算时使用的环境，它们搭载了�
 
 下面的内容大致介绍了目前主要使用的误差分析和拟合工具，NumPy 以及它的一些 GPU 实现。
 
-- [gvar & lsqfit](./lsqfit.md)
 - [NumPy & SciPy](./NumPy.md)
 - [NumBa & CuPy & PyTorch](./CuPy.md)
+- [gvar & lsqfit](./lsqfit.md)
