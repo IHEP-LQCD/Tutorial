@@ -22,7 +22,18 @@ x = gv.gvar(1,0.2)
 print(x.mean, '+-', x.sdev)  # output: 1+-0.2
 ```
 
-我们也可以直接用数据集创建 `gvar.Gvar` 对象，
+我们还可以直接通过数据集创建 `gvar.Gvar` 对象。
+
+```python
+import random
+data = []
+
+for i in range(10000):
+    data.append(random.gauss(0, 0.1))
+
+dataSet = gv.dataset.avg_data(data)
+print(dataSet)
+```
 
 `gvar.Gvar` 对象之间进行算数运算会得到新的 `gvar.Gvar` 对象，得到新变量的均值和标准偏差，值得注意的是，gvar 中误差处理只是简单的通过偏导数诱导的误差传递，如果所进行的运算在误差范围内线性性不好，需要使用重抽样方法，如 Jacknife 和 Bootstrap。
 
@@ -44,19 +55,6 @@ print(gv.evalcov([x, z]))
 
 w = x + y + 1
 print(w - z)  # output: 1(0)
-```
-
-我们还可以直接通过数据集创建 `gvar.Gvar` 对象。
-
-```python
-import random
-data = []
-
-for i in range(10000):
-    alist.append(random.gauss(0, 0.1))
-
-dataSet = gv.dataset.avg_data(alist)
-print(dataSet)
 ```
 
 ## lsqfit
