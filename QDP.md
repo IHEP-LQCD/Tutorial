@@ -29,3 +29,5 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DQMP_MPI=ON -DCMAKE_INSTALL_PREFIX=~/.local
 cmake --build . -j8
 cmake --install .
 ```
+
+通常我们并不直接使用 QMP，而是将其作为多进程版本的 QDPXX 和 QUDA 的依赖。
