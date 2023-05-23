@@ -7,11 +7,11 @@ pip install gvar
 pip install lsqfit
 ```
 
-> **For Windows users:** 安装过程中如果报错缺少 MSVC 依赖, 请到 [Visual Studio](https://visualstudio.microsoft.com/) 安装，需要至少含有 ```MSVC C++ tools``` 和 ```Windows 11/10 SDK``` 两项（详见[Visual Studio](./Windows.md)）。
+> **For Windows users:** 安装过程中如果报错缺少 MSVC 依赖, 请到 [Visual Studio](https://visualstudio.microsoft.com/) 安装，需要至少含有 ```MSVC C++ tools``` 和 ```Windows 11/10 SDK``` 两项（详见 [Visual Studio](./Windows.md)）。
 
 ## gvar 简介
 
-格点计算结果需要同时体现均值和偏差，gvar 模组提供了处理高斯型随机变量的工具，详细内容可以查阅[官方文档](https://gvar.readthedocs.io/en/latest)
+格点计算结果需要同时体现均值和偏差，gvar 模组提供了处理高斯型随机变量的工具，详细内容可以查阅 [官方文档](https://gvar.readthedocs.io/en/latest)
 
 通过下面的代码可以创建一个 `gvar.Gvar` 对象，这里 x 表示均值为 1，标准偏差为 0.2 的高斯型随机变量,直接用 `x()` 可以根据给定高斯分布参数抽取一个随机变量。
 
@@ -59,7 +59,7 @@ print(w - z)  # output: 1(0)
 
 ## lsqfit
 
-对以 `gvar.Gvar` 对象组成的序列进行拟合可以使用 `lsqfit` 模块，详细内容参见[官方文档](https://lsqfit.readthedocs.io/en/latest/)。
+对以 `gvar.Gvar` 对象组成的序列进行拟合可以使用 `lsqfit` 模块，详细内容参见 [官方文档](https://lsqfit.readthedocs.io/en/latest/)。
 本文只以一个简单拟合程序来说明其基本使用方式。
 
 ```python
