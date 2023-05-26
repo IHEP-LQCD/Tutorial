@@ -87,7 +87,7 @@ def setData():
     return xData,yData,func,prior
 
 if __name__ =='__main__':
-    xData,yData,func,prior =setData() 
+    xData,yData,func,prior =setData
     fit = lsqfit.nonlinear_fit(data=(xData,yData),fcn=func,prior=prior)
     print(fit.format(maxline=True))
 ```
@@ -100,18 +100,18 @@ Least Square Fit:
 Parameters:
               w                          2.95(35)e-14                 [  2.0 (1.0) ]  *
               h   3.9712361677636982548733612930 (43)                 [  3.80 (10) ]  *
-             w2                         8.038(69)e-17                 [  0.1 (1.0) ]  
-             h2   5.0774354372295347204158133536 (13)                 [     4 (10) ]  
+             w2                         8.038(69)e-17                 [  0.1 (1.0) ]
+             h2   5.0774354372295347204158133536 (13)                 [     4 (10) ]
 
 Fit:
      x[k]           y[k]      f(x[k],p)
 ---------------------------------------
         8     34.67 (18)     34.33 (12)  *
-        9    16.489 (93)    16.562 (50)  
+        9    16.489 (93)    16.562 (50)
        10     7.910 (49)     8.000 (21)  *
-       11     3.884 (26)    3.8702 (99)  
+       11     3.884 (26)    3.8702 (99)
        12     1.861 (14)    1.8753 (60)  *
-       13    0.9110 (75)    0.9104 (40)  
+       13    0.9110 (75)    0.9104 (40)
        14    0.4476 (40)    0.4429 (27)  *
 
 Settings:
@@ -121,5 +121,64 @@ Settings:
 ```
 第一部分是用于评价拟合质量的参数，第二部分是拟合得到的参数，后面的一个 * 代表期望值与数据相差一个 $\sigma$
 
+## Eaxmple: 两点关联函数拟合（two-state fit）
+以下是一个 two-state fit 例子。注意总是把能级最高的态考虑为所有高激发态的污染项。
+
+假设一个两点关联函数的变量 `correlator`, 形状为 `correlator.shape = (Ncfg, Nt)`。
+
+第一步是计算带误差的两点关联函数，误差由统计学中的重抽样方法（resampling）给出。格点中一般使用的重抽样方法包括： Jackknife （刀切法）或 Bootstrap 方法。
+
+调用函数 `gv.dataset.avg_data` 做重抽样给出误差，
+```python
+corr = gv.dataset.avg_data(correlator[:, :])
+print(corr)
+```
+你会看到输入的 `(Ncfg, Nt)` 后， 输出 `(Nt)` 长度的带误差的两点关联函数。即是我们要拟合的 `ydata`。
+
+定义两点关联函数的拟合函数 `func`，
+```python
+def func(t, p):
+    E1 = p['E1']
+    E2 = p['E2']
+    Z1 = p['Z1']
+    Z2 = p['Z2']
+
+    ans = Z1 * (gv.exp(-E1 * t) + gv.exp(-E1 * (Nt - t)))
+    ans += Z2 * (gv.exp(-E2 * t) + gv.exp(-E2 * (Nt - t)))
+    return ans
+```
+
+接下来要定义一个给程序做拟合用的初值,
+```
+prior = {
+        'Z1': gv.gvar(1, 10),
+        'Z2': gv.gvar(1, 10),
+        'E1': gv.gvar(0.55, 0.2),
+        'E2': gv.gvar(0.90, 0.2),
+}
+```
+
+> **注意:**
+>  - 初值的输入参数有两个：`prior` 或 `p0`。`prior`是带误差的`gv.Gvar`类型， `p0` 是一个数。
+>  - `prior` 和 `p0` 作为输入参数互斥，即二选一输入。
+>  - 如果你使用 `prior`, 建议误差给大一些。
+>  - *（重要）*：`prior` 或 `p0` 改变可能导致拟合失败。但已经拟合上的前提下，拟合结果不应该依赖 `prior` 或 `p0`。
+
+然后做拟合，
+```
+fit_window = np.arange(15, 64)
+xdata = np.arange(Nt)[fit_window]
+ydata = gv.dataset.avg_data(correlator[:, :])[fit_window]
+
+fit = lsqfit.nonlinear_fit(data=(xdata, ydata),
+                                fcn=func,
+                                prior=prior,
+                            )
+        print(fit.format(maxline=True))
+        fit_E = fit.p["E1"] if gv.mean(fit.p["E1"]) < gv.mean(fit.p["E2"]) else fit.p["E2"]
+        fit_func = fit.fcn(np.arange(Nt), fit.p)
+```
+
+## Example: 联合拟合（joint fit）
 
 
