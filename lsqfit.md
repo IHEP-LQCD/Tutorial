@@ -149,7 +149,7 @@ def func(t, p):
 ```
 
 接下来要定义一个给程序做拟合用的初值,
-```
+```python
 prior = {
         'Z1': gv.gvar(1, 10),
         'Z2': gv.gvar(1, 10),
@@ -165,7 +165,7 @@ prior = {
 >  - *（重要）*：`prior` 或 `p0` 改变可能导致拟合失败。但已经拟合上的前提下，拟合结果不应该依赖 `prior` 或 `p0`。
 
 然后做拟合，
-```
+```python
 fit_window = np.arange(15, 64)
 xdata = np.arange(Nt)[fit_window]
 ydata = gv.dataset.avg_data(correlator[:, :])[fit_window]
@@ -178,6 +178,9 @@ fit = lsqfit.nonlinear_fit(data=(xdata, ydata),
         fit_E = fit.p["E1"] if gv.mean(fit.p["E1"]) < gv.mean(fit.p["E2"]) else fit.p["E2"]
         fit_func = fit.fcn(np.arange(Nt), fit.p)
 ```
+
+> **注意:**
+> - 拟合带关联。
 
 ## Example: 联合拟合（joint fit）
 
