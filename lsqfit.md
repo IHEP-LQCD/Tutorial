@@ -60,9 +60,22 @@ w = x + y + 1
 print(w - z)  # output: 1(0)
 ```
 
+> **注意:** (*`gv.dataset.avg_data` 是带有协方差矩阵（covariance matrix）的数据类型*)。以下是一个例子：
+> ```python
+> # 假设两点关联函数 corr 具有 corr。shape= (Ncfg, Nt)
+> A = gv.dataset.avg_data(corr[:,:])
+> print(gv.evalcov(A))
+> # 可以看到 gv.evalcov(A) 是 (Nt, Nt) 形状的协方差矩阵
+> B = gv.gvar(gv.mean(A), gv.sdev(A))
+> print(gv.evalcov(B))
+> # gv.evalcov(B) 还是是 (Nt, Nt) 形状的协方差矩阵，但是除了对角元外都变为 0 了.
+> ```
+
 ## lsqfit
 
 对以 `gvar.Gvar` 对象组成的序列进行拟合可以使用 `lsqfit` 模块，详细内容参见 [官方文档](https://lsqfit.readthedocs.io/en/latest/)。
+`lsqfit` 的作者是大名鼎鼎的 [Peter Lepage](https://inspirehep.net/authors/1000548)，该程序最初也是为格点 QCD 分析写的包。
+
 本文只以一个简单拟合程序来说明其基本使用方式。
 
 ```python
@@ -70,25 +83,33 @@ import numpy as np
 import gvar as gv
 import lsqfit
 
-Nt =128
+Nt = 128
+
 
 def setData():
-    def func(x,p):
-        return p['w']*np.cosh(p['h']*(x-Nt/2)/6.894) +p['w2']*np.cosh(p['h2']*(x-Nt/2)/6.894)
 
-    xData= np.arange(8,15)
+    def func(x, p):
+        return p['w'] * np.cosh(p['h'] *
+                                (x - Nt / 2) / 6.894) + p['w2'] * np.cosh(
+                                    p['h2'] * (x - Nt / 2) / 6.894)
+
+    xData = np.arange(8, 15)
     prior = {}
-    prior['w'] = gv.gvar(2,1)
-    prior['h'] =gv.gvar(3.8,0.1)
-    prior['w2'] = gv.gvar(0.1,1)
-    prior['h2'] =gv.gvar(4.5,10)
-    yData = gv.gvar(['34.67(18)' ,'16.489(93)', '7.910(49)','3.884(26)', '1.861(14)' ,'0.9110(75)' ,'0.4476(40)'])
+    prior['w'] = gv.gvar(2, 1)
+    prior['h'] = gv.gvar(3.8, 0.1)
+    prior['w2'] = gv.gvar(0.1, 1)
+    prior['h2'] = gv.gvar(4.5, 10)
+    yData = gv.gvar([
+        '34.67(18)', '16.489(93)', '7.910(49)', '3.884(26)', '1.861(14)',
+        '0.9110(75)', '0.4476(40)'
+    ])
 
-    return xData,yData,func,prior
+    return xData, yData, func, prior
 
-if __name__ =='__main__':
-    xData,yData,func,prior =setData
-    fit = lsqfit.nonlinear_fit(data=(xData,yData),fcn=func,prior=prior)
+
+if __name__ == '__main__':
+    xData, yData, func, prior = setData()
+    fit = lsqfit.nonlinear_fit(data=(xData, yData), fcn=func, prior=prior)
     print(fit.format(maxline=True))
 ```
 
@@ -178,9 +199,6 @@ fit = lsqfit.nonlinear_fit(data=(xdata, ydata),
         fit_E = fit.p["E1"] if gv.mean(fit.p["E1"]) < gv.mean(fit.p["E2"]) else fit.p["E2"]
         fit_func = fit.fcn(np.arange(Nt), fit.p)
 ```
-
-> **注意:**
-> - 拟合带关联。
 
 ## Example: 联合拟合（joint fit）
 
