@@ -195,9 +195,9 @@ fit = lsqfit.nonlinear_fit(data=(xdata, ydata),
                                 fcn=func,
                                 prior=prior,
                             )
-        print(fit.format(maxline=True))
-        fit_E = fit.p["E1"] if gv.mean(fit.p["E1"]) < gv.mean(fit.p["E2"]) else fit.p["E2"]
-        fit_func = fit.fcn(np.arange(Nt), fit.p)
+print(fit.format(maxline=True))
+fit_E = fit.p["E1"] if gv.mean(fit.p["E1"]) < gv.mean(fit.p["E2"]) else fit.p["E2"]
+fit_func = fit.fcn(np.arange(Nt), fit.p)
 ```
 
 ## Example: 联合拟合（joint fit）
