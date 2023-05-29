@@ -62,10 +62,64 @@ cmake --install .
 
 ## C++ 调用 QDPXX
 
-我们现在可以通过 C++ 来调用 QDPXX 中定义的各种类和基础线性代数操作。我们将使用 CMake 配置项目。
+我们现在可以通过 C++ 来调用 QDPXX 中定义的各种类和基础线性代数操作。我们将使用 CMake 配置项目。直接通过 C++ 调用 QDPXX 能完成的任务有限，通常用于处理我们编写 Chroma 扩展的时候需要的一些简单操作。
+
+首先，需要通过 `CMakeLists.txt` 文件找到之前编译完成的 QDPXX，通常将 `CMAKE_INSTALL_PREFIX` 设置为之前使用的值即可。
+
+```CMake
+cmake_minimum_required(VERSION 3.0)
+set(CMAKE_INSTALL_PREFIX "~/.local")
+project(test_qdpxx LANGUAGES C CXX)
+
+find_package(QDPXX REQUIRED)
+add_executable(main main.cc)
+target_link_libraries(main QPDXX::qdp)
+```
+
+这样，你就可以在 `main.cc` 文件中通过 `#include <qdp.h>` 来使用 QDPXX 中的各种功能。例如我们可以在其中定义随机的格点规范场 $U_\mu(x)$ 和费米子场 $F(x)$，并计算 $\sum_\mu U_\mu(x)F(x+\hat\mu)$。
 
 ```C++
+#include <qdp.h>
+
+using namespace QDP;
+
+int main(int argc, char *argv[]) {
+    // 初始化 QDPXX
+    QDP_initialize(&argc, &argv);
+
+    // 设置格点规模，并创建 Layout
+    const int latdims[Nd] = {4, 4, 4, 8};
+    multi1d<int> nrow(Nd);
+    nrow = latdims;
+    Layout::setLattSize(nrow);
+    Layout::create();
+
+    // 创建规范场 U 并随机初始化
+    multi1d<LatticeColorMatrix> U(Nd);
+    for (int dir = 0; dir < Nd; ++dir) {
+        random(U[dir]);
+    }
+
+    // 创建费米子场 F 并随机初始化
+    LatticeFermion F;
+    random(F);
+
+    // 创建费米子场 UF 并置 0
+    LatticeFermion UF = zero;
+
+    // UF = \sum_\mu U_\mu(x) F(x+\hat\mu)
+    for (int dir = 0; dir < Nd; ++dir) {
+        UF += U[dir] * shift(F, FORWARD, dir);
+    }
+
+    // 结束 QDPXX
+    QDP_finalize();
+
+    return 0;
+}
 ```
+
+这样，再额外添加一些与 Gamma 矩阵相关的操作就可以简单地实现 Dslash。
 
 ## Chroma
 
