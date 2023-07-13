@@ -263,3 +263,7 @@ def joint_fit(ratio):
     print(fit.format(maxline=True))
     fit_y = fit.fcn(x, fit.p)
 ```
+
+> **Note:** 关联问题：联合拟合中存在的关联有两方面，
+> - 拟合对象 $Y$ 的关联。对于 $Y_i \in Y$ 一般是带有关联矩阵的输入量，比如是从 `gv.dataset.avg_data` 拿到的关联。
+> - 拟合后给出的参数 `fit.p` 中存在关联，可以通过 `print(fit.cov)` 查看参数之间的关联。
