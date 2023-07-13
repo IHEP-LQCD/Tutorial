@@ -201,5 +201,65 @@ fit_func = fit.fcn(np.arange(Nt), fit.p)
 ```
 
 ## Example: 联合拟合（joint fit）
+联合拟合的使用背景：假设有一 $X$ 集合 $X = {X_1, \cdots X_n}$，映射到了 $Y$ 集合 $Y = {Y_1, \cdots Y_m}$。映射无论由多少个函数，fit 的参数由  $P = {p_1, \cdots p_m}$ 给出。
+
+> **Note：** `Python` 字典（dict）是由一系列 `key: value` 对组成的，这个例子使用字典只是为了方便区分 $X(Y)$ 集合的子集，当然你可以不使用字典。
+
+使用 `lsqfit` 做联合拟合，最简单粗暴地，只需要记住一点：把拟合参数都写进 `prior` 或 `p0`里，然后拟合拟合函数写成，输入的是一个 $X$ 的字典，输出的是一个 $Y$ 字典。
 
 
+比如如下的是一个例子，
+- $X$ 集合有 6 个子集，我把它叫做 `p000` 到 `p022`，写进同一个字典里 `x`。每个子集的大小都有可能不一样。
+- $Y$ 集合同样定义字典 `y`。
+- 我的拟合参数有20个，都写进`prior` 或 `p0`里。
+- 联合拟合的 `fcn`，定义为 字典 `x` 到 字典 `y`。
+- 进行拟合， `nonlinear_fit`。
+- 打印拟合结果。
+
+```python
+def joint_fit(ratio):
+    ratio_name = ["p000", "p001", "p011", "p002", "p012", "p022"]
+    x = {"p000":np.arange(21, 50),
+         "p001":np.arange(22, 50),
+         "p011":np.arange(23, 50),
+         "p002":np.arange(24, 50),
+         "p012":np.arange(25, 50),
+         "p022":np.arange(26, 50)}
+    y = {}
+    for i, name in enumerate(ratio_name):
+        y[name] = ratio[i][x[name]]
+    prior = {
+        "E (p000)": gv.gvar(1, 1),
+        "E (p001)": gv.gvar(1, 1),
+        "E (p011)": gv.gvar(1, 1),
+        "E (p002)": gv.gvar(1, 1),
+        "E (p012)": gv.gvar(1, 1),
+        "E (p022)": gv.gvar(1, 1),
+        "delta_1": gv.gvar(1, 10),
+        "m_1": gv.gvar(1, 10),
+        "delta_2 (p000)": gv.gvar(-1, 10),
+        "delta_2 (p001)": gv.gvar(-1, 10),
+        "delta_2 (p011)": gv.gvar(-1, 10),
+        "delta_2 (p002)": gv.gvar(-1, 10),
+        "delta_2 (p012)": gv.gvar(-1, 10),
+        "delta_2 (p022)": gv.gvar(-1, 10),
+        "m_2 (p000)": gv.gvar(1, 10),
+        "m_2 (p001)": gv.gvar(1, 10),
+        "m_2 (p011)": gv.gvar(1, 10),
+        "m_2 (p002)": gv.gvar(1, 10),
+        "m_2 (p012)": gv.gvar(1, 10),
+        "m_2 (p022)": gv.gvar(1, 10),
+    }
+
+    def fcn(t, p):
+        ans = {}
+        for name in ratio_name:
+            ans[name] = p[F"E ({name})"] * (1 + p["delta_1"] * gv.exp(-t[name] * p["m_1"]) \
+                                        + p[F"delta_2 ({name})"] * gv.exp(-(tf - t[name]) * p[F"m_2 ({name})"])
+                                        )
+        return ans
+
+    fit = nonlinear_fit(data=(x, y), fcn=fcn, prior=prior)
+    print(fit.format(maxline=True))
+    fit_y = fit.fcn(x, fit.p)
+```
