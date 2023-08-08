@@ -14,7 +14,7 @@ Visual Studio Code 是微软主导开发的一款开源文本编辑器。其最�
 
     ```bash
         mv ~/.vscode-server {workdir}/.vscode-server
-        ls -s {workdir}/.vscode-server ~/.vscode-server
+        ln -s {workdir}/.vscode-server ~/.vscode-server
     ```
 
 - 系统中已经存在另外一个 VSCode 进程。处理：可以停止用户进程 `kill -9 -1`，后重新登录。
