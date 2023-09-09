@@ -34,30 +34,30 @@ $$\hat{\theta}_J^{(j)} = f(X_J^{(j)};n-1).$$
 
 Bootstrap estimators of bias and standard error are respectively,
 $$\hat{\delta}_B(\hat{\theta}) = \overline{\hat{\theta}_B} - \hat{\theta},$$
-$$\hat{\sigma}_B(\hat{\theta}) = \sqrt{\frac{1}{b-1}\sum _{i=1}^b (\hat{\theta}_B^{(i)} - \overline{\hat{\theta}_B})^2},$$
+$$\hat{\sigma}_B(\hat{\theta}) = \sqrt{\frac{1}{b-1}\sum\limits _{i=1}^b (\hat{\theta}_B^{(i)} - \overline{\hat{\theta}_B})^2},$$
 where,
-$$\overline{\hat{\theta}_B} = \frac{1}{b}\sum _{i=1}^b \hat{\theta}_B^{(i)}.$$
+$$\overline{\hat{\theta}_B} = \frac{1}{b}\sum\limits _{i=1}^b \hat{\theta}_B^{(i)}.$$
 
 #### 2.2
 
 Jackknife estimators of bias and standard error are respectively,
 $$\hat{\delta}_J(\hat{\theta}) = (n-1)(\overline{\hat{\theta}_J} - \hat{\theta}),$$
-$$\hat{\sigma}_J(\hat{\theta}) = \sqrt{\frac{n-1}{n}\sum _{j=1}^n (\hat{\theta}_J^{(j)}-\overline{\hat{\theta}_J})^2},$$
+$$\hat{\sigma}_J(\hat{\theta}) = \sqrt{\frac{n-1}{n}\sum\limits _{j=1}^n (\hat{\theta}_J^{(j)}-\overline{\hat{\theta}_J})^2},$$
 where,
-$$\overline{\hat{\theta}_J} = \frac{1}{n}\sum _{j=1}^n \hat{\theta}_J^{(j)}.$$
+$$\overline{\hat{\theta}_J} = \frac{1}{n}\sum\limits _{j=1}^n \hat{\theta}_J^{(j)}.$$
 
 #### 2.3
 
 Jackknife estimator of Bootstrap estimator of standard error
 (Jackknife-after-Bootstrap) is,
-$$\hat{\sigma}_J(\hat{\sigma}_B) = \sqrt{\frac{n-1}{n}\sum _{j=1}^n (\hat{\sigma}_B^{(j)}-\overline{\hat{\sigma}_B})^2},$$
+$$\hat{\sigma}_J(\hat{\sigma}_B) = \sqrt{\frac{n-1}{n}\sum\limits _{j=1}^n (\hat{\sigma}_B^{(j)}-\overline{\hat{\sigma}_B})^2},$$
 where,
-$$\overline{\hat{\sigma}_B} = \frac{1}{n}\sum _{j=1}^n \hat{\sigma}_B^{(j)},$$
+$$\overline{\hat{\sigma}_B} = \frac{1}{n}\sum\limits _{j=1}^n \hat{\sigma}_B^{(j)},$$
 with,
-$$\hat{\sigma}_B^{(j)} = \sqrt{\frac{1}{b_j -1}\sum _{i=1}^b (\hat{\theta}_B^{(i)}\Delta_j^{(i)}-\overline{\hat{\theta}_B \Delta_j})^2}$$
+$$\hat{\sigma}_B^{(j)} = \sqrt{\frac{1}{b_j -1}\sum\limits _{i=1}^b (\hat{\theta}_B^{(i)}\Delta_j^{(i)}-\overline{\hat{\theta}_B \Delta_j})^2}$$
 where,
-$$\overline{\hat{\theta}_B \Delta_j} = \frac{1}{b_j} \sum _{i=1}^b \hat{\theta}_B^{(i)}\Delta_j^{(i)},$$
-with, $$b_j = \sum _{i=1}^b \Delta_j^{(i)},$$ and,
+$$\overline{\hat{\theta}_B \Delta_j} = \frac{1}{b_j} \sum\limits _{i=1}^b \hat{\theta}_B^{(i)}\Delta_j^{(i)},$$
+with, $$b_j = \sum\limits _{i=1}^b \Delta_j^{(i)},$$ and,
 $$\Delta_j^{(i)} = 1,\ \mathrm{if}\ x_j \notin X_B^{(i)};\quad \Delta_j^{(i)} = 0,\ \mathrm{otherwise}.$$
 
 # Bootstrap Confidence Intervals
@@ -108,7 +108,6 @@ where,
 $$\mu = \Phi \Big( \hat{z}+\frac{\hat{z}+Z(\alpha/2)}{1-(\hat{z}+Z(\alpha/2))\hat{a}} \Big),$$
 $$\nu = \Phi \Big( \hat{z}+\frac{\hat{z}+Z(1-\alpha/2)}{1-(\hat{z}+Z(1-\alpha/2))\hat{a}} \Big),$$
 with,
-$$\hat{z} = Z\Big( \frac{1}{b}\sum _{i=1}^b \Theta(\hat{\theta}-\hat{\theta}_B^{(i)}) \Big),$$
+$$\hat{z} = Z\Big( \frac{1}{b}\sum\limits _{i=1}^b \Theta(\hat{\theta}-\hat{\theta}_B^{(i)}) \Big),$$
 where $\Theta$ is Heaviside step function, and,
-$$\hat{a} = -\frac{1}{6} \frac{\sum _{j=1}^n (\hat{\theta}_J^{(j)}-\overline{\hat{\theta}_J})^3}{\big(\sum _{j=1}^n (\hat{\theta}_J^{(j)}-\overline{\hat{\theta}_J})^2\big)^{3/2}}.$$
-这里的求和符号显示好奇怪，我不知道怎么改。
+$$\hat{a} = -\frac{1}{6} \frac{\sum\limits _{j=1}^n (\hat{\theta}_J^{(j)}-\overline{\hat{\theta}_J})^3}{\big(\sum\limits _{j=1}^n (\hat{\theta}_J^{(j)}-\overline{\hat{\theta}_J})^2\big)^{3/2}}.$$
