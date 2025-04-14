@@ -31,18 +31,17 @@ git pull # 更新 QUDA
 mkdir build
 cd build
 export CUDA_HOME=/usr/local/cuda-12.3/ # 设定 CUDA 路径
-cmake -DQUDA_DOWNLOAD_EIGEN=ON \ # 需要联网的地方，如果不联网需要修改 eigen 的哈希值
-    -DCMAKE_INSTALL_PREFIX="/home/shicj-wsl2/soft/quda-install-eead44e1" \
-    -DQUDA_MPI=ON -DQUDA_CLOVER_DYNAMIC=OFF \
+cmake -DCMAKE_INSTALL_PREFIX="/home/shicj-wsl2/soft/quda-install-eead44e1" \
+    -DQUDA_MPI=ON \
+    -DQUDA_COVDEV=ON \
+    -DQUDA_CLOVER_DYNAMIC=OFF \
     -DQUDA_CLOVER_RECONSTRUCT=OFF \
     -DQUDA_MULTIGRID=ON \ #需要开
-    -DQUDA_DIRAC_DOMAIN_WALL=OFF \
-    -DQUDA_DIRAC_NDEG_TWISTED_CLOVER=OFF \
-    -DQUDA_DIRAC_NDEG_TWISTED_MASS=OFF \
+    -DQUDA_DIRAC_DEFAULT_OFF=ON \
+    -DQUDA_DIRAC_WILSON=ON \
+    -DQUDA_DIRAC_CLOVER=ON \
     -DQUDA_DIRAC_STAGGERED=ON \
-    -DQUDA_DIRAC_TWISTED_CLOVER=OFF \
-    -DQUDA_DIRAC_TWISTED_MASS=OFF \
-    -DQUDA_DIRAC_WILSON=OFF \
+    -DQUDA_DIRAC_LAPLACE=ON \
     -DQUDA_GPU_ARCH=sm_75 \ # 架构
     ..
 ```
@@ -58,16 +57,16 @@ cmake -DQUDA_DOWNLOAD_EIGEN=ON \ # 需要联网的地方，如果不联网需要
        echo $LIBRARY_PATH
        echo $LD_LIBRARY_PATH
        ```
-     - **重要**：多层级编译时使用相同版本的底层依赖，特别是 openMPI/MPICH2、CUDA 等
+     - **重要**：多层级编译时使用相同版本的底层依赖，特别是 OpenMPI/MPICH2、CUDA 等
 
 2. **其他常见问题**：
    - CMAKE 的 `-D` 参数配置问题
    - 离线环境的网络依赖问题
    - CUDA 和 Git 版本依赖问题
-   - openMPI 配置问题（将直接影响多卡性能）
+   - OpenMPI 配置问题（将直接影响多卡性能）
 
 ### 2.3 PyQUDA 安装
-- 确保安装与 QUDA 相同版本的 openMPI/MPICH2 和 CUDA，分别见他们安装的位置（包含 `bin/` 和 `lib/`的位置），重要！！！
+- 确保安装与 QUDA 相同版本的 OpenMPI/MPICH2 和 CUDA，分别见他们安装的位置（包含 `bin/` 和 `lib/`的位置），重要！！！
 
 - 按照 [PyQUDA](https://github.com/CLQCD/PyQUDA) 的说明安装：`export QUDA_PATH=XXX`
 ---
