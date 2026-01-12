@@ -50,15 +50,15 @@
 
 **分区编号规则**：**主分区** / **扩展分区**共用 `1` / `2` / `3` / `4` （对于同一块硬盘，二者合计最多 4 个）。**主分区**用于写入数据，**扩展分区**只用于包含**逻辑分区**，一块硬盘上只能有最多 1 个**扩展分区**。**逻辑分区**的编号从 `5` 开始，**逻辑分区**可以行使和**主分区**相同的功能。（**逻辑分区**的编号一定从 `5` 开始，如果某一块硬盘上只有 2 个**主分区**和 3 个**逻辑分区**，那么这块硬盘的分区编号 `1` / `2` 是**主分区**，`5` / `6` / `7` 是**逻辑分区**，`3` 是包含这些逻辑分区的**扩展分区**，没有 `4`。）
 
-## 命令格式
+## 命令行格式
 ```
-cmd opt param
+cmd opt params
 ```
 - `cmd` ：命令名称。
 - `opt` ：选项。`-` 后跟选项简称，`--` 后跟选项全称。多个选项同时启用，`-` 后跟上各个选项简称即可，也可以分开写。（例如，同时启用 `a` / `b` / `c` / `d` 四个选项，可以写成 `-abcd`，也可以写 `-a -b -c -d`。也可以写 `-acdb`，因为大部分选项次序与实际效果无关。）
-- `param` ：参数。一般是指命令的作用对象。作为 `param` 的文件（**可以是目录**）是指该文件的**路径**，作为 `param` 的**设备**或**硬盘分区**是指该设备或硬盘分区的**设备文件名**。
+- `params` ：参数。一般是指命令的作用对象，若 `params` 有多个，则用**空格**隔开。作为 `params` 的文件（**可以是目录**）是指该文件的**路径**，作为 `params` 的**设备**或**硬盘分区**是指该设备或硬盘分区的**设备文件名**。
 
-`opt` 可以为空，`param` 一般不为空。`opt` 可以为 `--help`，此时显示 `cmd` 命令的常用选项列表。
+`opt` 可以为空，`params` 一般不为空。`opt` 可以为 `--help`，此时显示 `cmd` 命令的常用选项列表。
 
 ## 路径格式
 - `/` ：**根目录**。`/` 前面没有任何字符才表示**根目录**，否则 `/` 为目录与其下的文件（或者下一级目录）之间的分隔符。
@@ -71,22 +71,78 @@ cmd opt param
 **绝对路径**必须从根目录开始，**相对路径**只能从当前目录开始。**相对路径**可理解为以 `./` 为起点的**绝对路径**，只不过 `./` 可以省略。
 
 ## 挂载卸载命令
+```
+mount param1 param2
+mount -t param0 param1 param2
+umount param
+```
 - `mount` ：把 `param1` 设备挂载到 `param2` 目录。（`param2` 目录称为 `param1` 设备的挂载点。）
-  - `-t` ：指定文件系统。若**启用**，则命令格式改为 `mount -t param0 param1 param2`，其中 `param0` 为文件系统名称；若**不启用**，则自动识别文件系统。
+  - `-t` ：指定 `param0` 文件系统。若**不启用**，则自动识别文件系统。
 - `umount` ：卸载 `param` 设备。
 
 ## 文件处理命令
+```
+ls param/
+ls param
+ls
+ls -a param/
+ls -l param/
+ls -l param
+ls -ld param/
+ls -ld param
+ls -lh param/
+ls -lh param
+ls -i param/
+ls -i param
+ll param/
+ll param
+ll
+mkdir param/
+mkdir -p param/
+cd param/
+cd
+pwd
+rmdir param/
+cp param1 param2/
+cp param1 param2/new
+cp -r param1/ param2/
+cp -r param1/ param2/new
+cp -p param1 param2/
+cp -p param1 param2/new
+mv param1 param2/
+mv param1 param2/new
+mv param1 new
+rm param
+rm -r param/
+rm -f param
+rm -rf param/
+touch param
+cat param
+cat -n param
+tac param
+more param
+less param
+head param
+head -n num param
+tail param
+tail -n num param
+tail -f param
+tail -fn num param
+ln param1 param2
+ln -s param1 param2
+ln -s param1/ param2
+```
 - `ls` ：显示 `param` **目录**下的所有文件。若 `param` 为空，则默认为**当前目录**。（Linux 的**目录**就是 Windows 的**文件夹**，但同时也是文件。）
   - `-a` ：同时显示**隐藏文件**；若**不启用**则不显示隐藏文件（Linux 中的**隐藏文件**就是指文件名以 `.` 开头的文件）。
   - `-l` ：显示**详细信息**（见下）；若**不启用**则只显示文件名。**启用时**，`param` **可以不是目录**，此时显示 `param` 的详细信息。
-    - `-d` ：若同时**启用** `-ld` 且 `param` 是**目录**，则显示 `param` 的详细信息。
-    - `-h` ：若同时**启用** `-lh`，则详细信息中的**文件大小**按最大单位显示。若**不启用**，则默认单位是**字节**。
+    - `-d` ：若**同时启用** `-ld` 且 `param` 是**目录**，则显示 `param` 的详细信息。
+    - `-h` ：若**同时启用** `-lh`，则详细信息中的**文件大小**按最大单位显示。若**不启用**，则默认单位是**字节**。
   - `-i` ：显示 **i 节点**编码。
 - `ll` ：执行 `ls` 并**启用** `-l`。
 - `mkdir` ：新建 `param` **目录**。`param` 可以有多个，此时分别新建多个目录。
   - `-p` ：递归创建。若**不启用**则只能创建已有目录的**下一级目录**。（若 `A` 目录是 `B` 目录的**上一级目录**，那么 `B` 就是 `A` 的**下一级目录**。）
 - `cd` ：切换**当前目录**。`param` 为切换后的**当前目录**。若 `param` 为空，则默认为**宿主目录**。
-- `pwd` ：显示**当前目录**的路径。`param` 需为空。
+- `pwd` ：显示**当前目录**的路径。`param` 需为**空**。
 - `rmdir` ：删除 `param` **空目录**。`param` 可以有多个，此时分别删除多个**空目录**。
 - `cp` ：复制 `param1` 文件到 `param2` **目录**下。`param1` 可以有多个，此时分别复制多个文件到 `param2` 目录下。若 `param1` 只有 1 个，则 `param2` 可以为 `param2/new`，此时复制 `param1` 文件到 `param2` 目录下并将副本重命名为 `new`。
   - `-r` ：复制**目录**。若**不启用**，则 `param1` **不能为目录**。
@@ -102,9 +158,9 @@ cmd opt param
 - `more` ：分页显示 `param` 文件内容。按 `Space` 翻页，按 `Enter` 换行，按 `Q` 退出。
 - `less` ：分页显示 `param` 文件的内容。按 `PageUp` 上一页，按 `PageDown` 下一页，按 `↑` 上一行，按 `↓` 下一行。可以搜索关键词（按 `/` 后输入关键词，然后按 `Enter` 搜索关键词，按 `N` 定位到关键词下一个所在位置。
 - `head` ：显示 `param` 文件的前 10 行。
-  - `-n` ：若**启用**，则改为显示 `param2` 文件的前 `param1` 行。
+  - `-n` ：若启用，则改为显示 `param` 文件的前 `num` 行。
 - `tail` ：显示 `param` 文件的后 10 行。
-  - `-n` ：若**启用**，则改为显示 `param2` 文件的后 `param1` 行。
+  - `-n` ：若启用，则改为显示 `param` 文件的后 `num` 行。
   - `-f` ：打开监视模式。（此模式下可以实时查看是否有其他用户正在修改文件内容。）
 - `ln` ：生成**链接文件**。默认创建 `param1` 文件的**硬链接** `param2`（`param2` 需与 `param1` 处于同一**硬盘分区**）。（Linux 的**硬链接**是源文件的复制，但与源文件共享 **i 节点**。）
   - `-s` ：若启用，则改为创建 `param1` 文件（**可以是目录**）的**软链接** `param2`。（Linux 的**软链接**就是 Windows 的**快捷方式**。）
@@ -135,12 +191,24 @@ typemode. count owner group size month date time filename
 - `-` ：占位符
 
 ## 权限管理命令
-- `chmod` ：修改 `param2` 文件（**可以是目录**）的**访问权限**为 `param1`，`param1` 可以是 **ugo 格式** 或者 **bin 格式**（见下）。
-- `-R` ：递归修改。若**启用**且 `param2` 是**目录**，则同时修改该目录下所有文件的**访问权限**，但以此法不会取消该目录下文件的**执行权限**。
-- `chown` ：修改 `param2` 文件（**可以是目录**）的**所有者**为 `param1` 用户名。
-- `chgrp` ：修改 `param2` 文件（**可以是目录**）的**所属组**为 `param1` 所属组名称。（每个用户都有一个默认的**所属组**，这个**所属组名称**与该用户的**用户名**相同。）
-- `umask` ：修改以后**新建目录**的默认**访问权限**，`param` 为 **xor 格式**（见下）。若 `param` 为空，则改为以四位数的形式显示现在**新建目录**的默认**访问权限**，其中后 3 位为 **xor 格式**；若 `param` 不为空，则同时修改以后**新建文件**的默认**访问权限**，但无论如何不会给**新建文件**设置默认的**执行权限**。
-  - `-S` ：以 **ugo 格式**显示现在**新建目录**的默认**访问权限**，**启用时** `param` 需为空。
+```
+chmod num param
+chmod num param/
+chmod -R num param/
+chown name param
+chown name param/
+chgrp name param
+chgrp name param/
+umask num
+umask
+umask -S
+```
+- `chmod` ：修改 `param` 文件（**可以是目录**）的**访问权限**为 `num`，`num` 可以是 **ugo 格式** 或者 **bin 格式**（见下）。
+  - `-R` ：递归修改。若启用且 `param` 是**目录**，则同时修改该目录下所有文件的**访问权限**，但以此法不会取消该目录下文件的**执行权限**。
+- `chown` ：修改 `param` 文件（**可以是目录**）的**所有者**为 `name` 用户名。
+- `chgrp` ：修改 `param` 文件（**可以是目录**）的**所属组**为 `name` 所属组名称。（每个用户都有一个默认的**所属组**，这个**所属组名称**与该用户的**用户名**相同。）
+- `umask` ：修改以后**新建目录**的默认**访问权限**，`num` 为 **xor 格式**（见下）。若 `num` 为**空**，则改为以四位数的形式显示现在**新建目录**的默认**访问权限**，其中后 3 位为 **xor 格式**；若 `num` **不为空**，则同时修改以后**新建文件**的默认**访问权限**，但无论如何不会给**新建文件**设置默认的**执行权限**。
+  - `-S` ：以 **ugo 格式**显示现在**新建目录**的默认**访问权限**，启用时 `num` 需为**空**。
 
 ### ugo 格式
 - `u` ：**所有者**
@@ -165,43 +233,56 @@ typemode. count owner group size month date time filename
 ### xor 格式
 即 **bin 格式**与 `777` 的异或。
 
-##  TODO
+## 文件搜索命令
 ```
-◆文件搜索命令
-find     在param0目录下搜索满足param1条件的文件。
-         命令格式为：find param0 opt param1。
--name    若启用，则param1为文件名。
--iname   启用-name，但不区分大小写。
--size    若启用，则param1为文件大小，按数据块格式。可以使用前置字符+或-来表示大于或小于。
--type    若启用，则param1为文件类型。用f表示普通文件（二进制文件），d表示目录，l表示软链接。
--user    若启用，则param1为文件的所有者。
--group   若启用，则param1为文件的所属组。
--amin    若启用，则param1为文件的最后访问时间距离此刻的分钟数。可以使用前置字符+或-来表示大于或小于。
--cmin    若启用，则param1为文件属性的最后更新时间距离此刻的分钟数。可以使用前置字符+或-来表示大于或小于。
--mmin    若启用，则param1为文件内容的最后修改时间距离此刻的分钟数。可以使用前置字符+或-来表示大于或小于。
--inum    若启用，则param1为文件的i节点编码。
--a       若启用，则命令格式改为：find param0 opt1 param1 -a opt2 param2。
-         执行改为：在param0目录下搜索同时满足param1和param1条件的文件，param1和param2的格式分别由opt1和opt2决定。
--o       若启用，则命令格式改为：find param0 opt1 param1 -o opt2 param2。
-         执行改为：在param0目录下搜索满足param1和param2条件至少其一的文件，param1和param2的格式分别由opt1和opt2决定。
--exec    若启用，则命令格式改为：find param0 opt param1 -exec cmdline {} \;
-         执行改为：在param0目录下搜索满足param1条件的文件，并对搜索到的文件执行cmdline。
-         cmdline是完整的命令行，包含必要的cmd opt param。
--ok      若启用，则命令格式改为：find param0 opt param1 -ok cmdline {} \;
-         执行改为：在param0目录下搜索满足param1条件的文件并弹出确认信息，确认后对搜索到的文件执行cmdline。
-         cmdline是完整的命令行，包含必要的cmd opt param。
-         -exec或-ok也可以与-a或-o同时启用，例如：find param0 opt1 param1 -o opt2 param2 -exec cmdline {} \;
-locate   在资料库中搜索文件名为param的文件。
--i       不区分大小写。
-updatedb 更新文件资料库。param需为空。
-which    显示命令路径，同时显示命令别称（实际执行的alias）。param为命令名称。
-whereis  显示命令路径或配置路径，同时显示命令或配置的帮助路径。param为命令名称或配置名称。
-grep     在param2文件中搜索关键词param1所在行。
--i       不区分大小写。
--v       改为执行：在param2文件中搜索关键词param1所不在行。
-------数据块格式------
-文件大小的数据块格式即为文件的实际大小除以1个数据块的大小所得的比值。1个数据块的大小为512B。
+find param/ opt "str"
+find param/ opt1 "str1" -a opt2 "str2"
+find param/ opt1 "str1" -o opt2 "str2"
+find param/ opt "str" -exec excmd exopt exparams {}\;
+find param/ opt1 "str1" -a opt2 "str2" -exec excmd exopt exparams {}\;
+find param/ opt1 "str1" -o opt2 "str2" -exec excmd exopt exparams {}\;
+find param/ opt "str" -ok excmd exopt exparams {}\;
+find param/ opt1 "str1" -a opt2 "str2" -ok excmd exopt exparams {}\;
+find param/ opt1 "str1" -o opt2 "str2" -ok excmd exopt exparams {}\;
+locate param
+locate -i param
+updatedb
+which excmd
+whereis excmd
+grep "str" param
+grep -i "str" param
+grep -v "str" param
+grep -r "str" param/
+```
+- `find` ：在 `param` **目录**下搜索满足 `str` 条件的文件。
+  - `-name` ：若启用，则 `str` 为文件名。
+  - `-iname` ：若启用 `-name`，但不区分大小写。
+  - `-size` ：若启用，则 `str` 为**文件大小**，按**数据块格式**（见下）。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
+  - `-type` ：若启用，则 `str` 为**文件类型**。用 `d` / `l` 表示**目录** / **软链接**，用 `f` 表示普通文件（文本文件或二进制文件）。
+  - `-user` ：若启用，则 `str` 为文件的**所有者**用户名。
+  - `-group` ：若启用，则 `str` 为文件的**所属组**名称。
+  - `-amin` ：若启用，则 `str` 为文件的最后访问时间距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
+  - `-cmin` ：若启用，则 `str` 为文件属性的最后更新时间距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
+  - `-mmin` ：若启用，则 `str` 为文件内容的最后修改时间距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
+  - `-inum` ：若启用，则 `str` 为文件的 **i 节点**编码。
+  - `-a` ：在 `param` **目录**下搜索同时满足 `str1` 条件和 `str2` 条件的文件，`str1` 和 `str2` 的格式分别由 `opt1` 和 `opt2` 决定。
+  - `-o` ：在 `param` **目录**下搜索满足 `str1` 条件和 `str2` 条件至少其一的文件，`str1` 和 `str2` 的格式分别由 `opt1` 和 `opt2` 决定。
+  - `-exec` ：在 `param` **目录**下搜索满足 `str` 条件的文件，并对搜索到的文件执行 `excmd exopt exparams` 命令行。
+  - `-ok` ：在 `param` **目录**下搜索满足 `str` 条件的文件并弹出确认信息，确认后对搜索到的文件执行 `excmd exopt exparams` 命令行。
+- `locate` ：在**资料库**中搜索 `param` 文件名。
+  - `-i` ：不区分大小写。
+- `updatedb` ：更新**资料库**。`param` 需为**空**。
+- `which` ：显示 `excmd` 命令的**路径**，同时显示命令别称。
+- `whereis` ：显示 `excmd` 命令或配置的**路径**，同时显示命令或配置的帮助路径。
+- `grep` ：在 `param` 文件中搜索关键词 `str` 所在行。
+  - `-i` ：不区分大小写。
+  - `-v` ：若启用，则改为在 `param` 文件中搜索关键词 `str` 所**不在**行。
+  - `-r` ：若启用，则改为遍历 `param` **目录**及其**递归的**各个**下级目录**中的所有文件，搜索关键词 `str` 所在行。
+### 数据块格式
+即为**文件大小**与 1 个数据块大小的比值，其中 1 个数据块大小为 512 字节。
 
+## TODO
+```
 ◆帮助查询命令
 man      查看命令或配置的帮助手册。param为命令名称或配置名称。
 man 1    查看命令的帮助手册。param为命令名称。
