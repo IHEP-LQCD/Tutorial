@@ -21,10 +21,8 @@
 - `/dev/hdb` ：IDE 硬盘
 - `/dev/hdc` ：IDE 硬盘
 - `/dev/hdd` ：IDE 硬盘
-- `/dev/sda` ：SCSI/SATA/USB 硬盘
-- `/dev/sdb` ：SCSI/SATA/USB 硬盘
-- `/dev/sdc` ：SCSI/SATA/USB 硬盘
-- `/dev/sdp` ：SCSI/SATA/USB 硬盘
+- `/dev/sda` ：SCSI / SATA / USB 硬盘
+- `/dev/sdp` ：SCSI / SATA / USB 硬盘
 - `/dev/cdrom` ：光驱
 - `/dev/sr0` ：光驱
 - `/dev/fd0` ：软盘
@@ -33,10 +31,11 @@
 - `/dev/lp1` ：25 针打印机
 - `/dev/lp2` ：25 针打印机
 - `/dev/usb/lp0` ：USB 打印机
-- `/dev/usb/lp1` ：USB 打印机
-- `/dev/usb/lp2` ：USB 打印机
 - `/dev/usb/lp15` ：USB 打印机
 - `/dev/mouse` ：鼠标
+
+把 `/dev/sda` 中的最后一个字符换成 `a` ~ `p` 之间的任何一个小写字母，仍然是 SCSI / SATA / USB 硬盘的**设备文件名**。把 `/dev/usb/lp0` 中的最后一个字符换成 `0` ~ `15` 之间的任何一个整数，仍然是 USB 打印机的**设备文件名**。
+
 ### 硬盘分区
 - `/dev/hda1` ：IDE 硬盘主分区接口
 - `/dev/hda2` ：IDE 硬盘主分区 / 扩展分区接口
@@ -56,7 +55,7 @@ cmd opt params
 ```
 - `cmd` ：命令名称。
 - `opt` ：选项。`-` 后跟选项**简称**，`--` 后跟选项**全称**。多个选项同时启用，`-` 后跟上各个选项简称即可，也可以分开写。（例如，同时启用 `a` / `b` / `c` / `d` 四个选项，可以写成 `-abcd`，也可以写 `-a -b -c -d`。也可以写 `-acdb`，因为大部分选项次序与实际效果无关。）
-- `params` ：参数。一般是指命令的作用对象，若 `params` 有多个，则用**空格**隔开。作为 `params` 的文件（**可以是目录**）是指该文件的**路径**，作为 `params` 的**设备**或**硬盘分区**是指该设备或硬盘分区的**设备文件名**。
+- `params` ：参数。一般是指命令的作用对象，若 `params` 可以有多个，则互相用**空格**隔开。作为 `params` 的文件（**可以是目录**）是指该文件的**路径**，作为 `params` 的**设备**或**硬盘分区**是指该设备或硬盘分区的**设备文件名**。
 
 `opt` 可以为空，`params` 一般不为空。`opt` 可以为 `--help`，此时显示 `cmd` 命令的常用选项列表。
 
@@ -86,17 +85,28 @@ ls param/
 ls param
 ls
 ls -a param/
+ls -a
 ls -l param/
 ls -l param
+ls -l
 ls -ld param/
 ls -ld param
+ls -ld
 ls -lh param/
 ls -lh param
+ls -lh
 ls -i param/
 ls -i param
+ls -i
 ll param/
 ll param
 ll
+ll -d param/
+ll -d param
+ll -d
+ll -h param/
+ll -h param
+ll -h
 mkdir param/
 mkdir -p param/
 cd param/
@@ -135,19 +145,19 @@ ln -s param1/ param2
 - `ls` ：显示 `param` **目录**下的所有文件。若 `param` 为空，则默认为**当前目录**。（**Linux** 的**目录**就是 **Windows** 的**文件夹**，但同时也是文件。）
   - `-a` ：同时显示**隐藏文件**；若**不启用**则不显示隐藏文件（**Linux** 中的**隐藏文件**就是指文件名以 `.` 开头的文件）。
   - `-l` ：显示**详细信息**（见下）；若**不启用**则只显示文件名。**启用时**，`param` **可以不是目录**，此时显示 `param` 的详细信息。
-    - `-d` ：若**同时启用** `-ld` 且 `param` 是**目录**，则显示 `param` 的详细信息。
-    - `-h` ：若**同时启用** `-lh`，则详细信息中的**文件大小**按最大单位显示。若**不启用**，则默认单位是**字节**。
+    - `-d` ：若同时启用 `-ld` 且 `param` 是**目录**，则显示 `param` 的详细信息。
+    - `-h` ：若同时启用 `-lh`，则详细信息中的**文件大小**按最大单位显示。若**不启用**，则默认单位是**字节**。
   - `-i` ：显示 **i 节点**编码。
-- `ll` ：执行 `ls` 并**启用** `-l`。
+- `ll` ：执行 `ls` 并启用 `-l`。
 - `mkdir` ：新建 `param` **目录**。`param` 可以有多个，此时分别新建多个目录。
   - `-p` ：递归创建。若**不启用**则只能创建已有目录的**下一级目录**。（若 `A` 目录是 `B` 目录的**上一级目录**，那么 `B` 就是 `A` 的**下一级目录**。）
 - `cd` ：切换**当前目录**。`param` 为切换后的**当前目录**。若 `param` 为空，则默认为**宿主目录**。
 - `pwd` ：显示**当前目录**的路径。`params` 需为**空**。
 - `rmdir` ：删除 `param` **空目录**。`param` 可以有多个，此时分别删除多个**空目录**。
-- `cp` ：复制 `param1` 文件到 `param2` **目录**下。`param1` 可以有多个，此时分别复制多个文件到 `param2` 目录下。若 `param1` 只有 1 个，则 `param2` 可以为 `param2/new`，此时复制 `param1` 文件到 `param2` 目录下并将副本重命名为 `new`。
+- `cp` ：复制 `param1` 文件到 `param2` **目录**下，覆盖同名旧文件（如果存在）。`param1` 可以有多个，此时分别复制多个文件到 `param2` 目录下。若 `param1` 只有 1 个，则 `param2` 可以为 `param2/new`，此时复制 `param1` 文件到 `param2` 目录下并将副本重命名为 `new`。
   - `-r` ：复制**目录**。若**不启用**，则 `param1` **不能为目录**。
   - `-p` ：同时复制**详细信息**（见下）。若**不启用**，则仅复制内容。
-  - `mv` ：移动 `param1` 文件（**可以是目录**）到 `param2` **目录**下。`param1` 可以有多个，此时分别移动多个文件到 `param2` 目录下。若 `param1` 只有 1 个，则 `param2` 可以为 `param2/new`，此时移动 `param1` 文件到 `param2` 目录下并重命名为 `new`。若 `param1` 本来就在 `param2` 目录下，则仅重命名。
+- `mv` ：移动 `param1` 文件（**可以是目录**）到 `param2` **目录**下，覆盖同名旧文件（如果存在）。`param1` 可以有多个，此时分别移动多个文件到 `param2` 目录下。若 `param1` 只有 1 个，则 `param2` 可以为 `param2/new`，此时移动 `param1` 文件到 `param2` 目录下并重命名为 `new`。若 `param1` 本来就在 `param2` 目录下，则仅重命名。
 - `rm` ：删除 `param` 文件。`param` 可以有多个，此时分别删除多个文件。
   - `-r` ：删除**目录**。若**不启用**，则 `param1` **不能为目录**。
   - `-f` ：强制执行。若**不启用**，则**可能**会弹出确认信息。
@@ -238,12 +248,12 @@ umask -S
 find param/ opt "str"
 find param/ opt1 "str1" -a opt2 "str2"
 find param/ opt1 "str1" -o opt2 "str2"
-find param/ opt "str" -exec excmd exopt exparams {}\;
-find param/ opt1 "str1" -a opt2 "str2" -exec excmd exopt exparams {}\;
-find param/ opt1 "str1" -o opt2 "str2" -exec excmd exopt exparams {}\;
-find param/ opt "str" -ok excmd exopt exparams {}\;
-find param/ opt1 "str1" -a opt2 "str2" -ok excmd exopt exparams {}\;
-find param/ opt1 "str1" -o opt2 "str2" -ok excmd exopt exparams {}\;
+find param/ opt "str" -exec cmd opt params {}\;
+find param/ opt1 "str1" -a opt2 "str2" -exec cmd opt params {}\;
+find param/ opt1 "str1" -o opt2 "str2" -exec cmd opt params {}\;
+find param/ opt "str" -ok cmd opt params {}\;
+find param/ opt1 "str1" -a opt2 "str2" -ok cmd opt params {}\;
+find param/ opt1 "str1" -o opt2 "str2" -ok cmd opt params {}\;
 locate param
 locate -i param
 updatedb
@@ -267,8 +277,8 @@ grep -r "str" param/
   - `-inum` ：若启用，则 `str` 为文件的 **i 节点**编码。
   - `-a` ：在 `param` **目录**下搜索同时满足 `str1` 条件和 `str2` 条件的文件，`str1` 和 `str2` 的格式分别由 `opt1` 和 `opt2` 决定。
   - `-o` ：在 `param` **目录**下搜索满足 `str1` 条件和 `str2` 条件至少其一的文件，`str1` 和 `str2` 的格式分别由 `opt1` 和 `opt2` 决定。
-  - `-exec` ：在 `param` **目录**下搜索满足 `str` 条件的文件，并对搜索到的文件执行 `excmd exopt exparams` 命令行。
-  - `-ok` ：在 `param` **目录**下搜索满足 `str` 条件的文件并弹出确认信息，确认后对搜索到的文件执行 `excmd exopt exparams` 命令行。
+  - `-exec` ：在 `param` **目录**下搜索满足 `str` 条件的文件，并对搜索到的文件执行 `cmd opt params` 命令行。
+  - `-ok` ：在 `param` **目录**下搜索满足 `str` 条件的文件并弹出确认信息，确认后对搜索到的文件执行 `cmd opt params` 命令行。
 - `locate` ：在**资料库**中搜索 `param` 文件名。
   - `-i` ：不区分大小写。
 - `updatedb` ：更新**资料库**。`params` 需为**空**。
@@ -277,7 +287,7 @@ grep -r "str" param/
 - `grep` ：在 `param` 文件中搜索关键词 `str` 所在行。
   - `-i` ：不区分大小写。
   - `-v` ：若启用，则改为在 `param` 文件中搜索关键词 `str` 所**不在**行。
-  - `-r` ：若启用，则改为遍历 `param` **目录**及其**递归的**各个**下级目录**中的所有文件，搜索关键词 `str` 所在行。
+  - `-r` ：若启用，则改为遍历 `param` **目录**（递归地包括各个**下级目录**）中的所有文件，搜索关键词 `str` 所在行。
 ### 数据块格式
 即为**文件大小**与 1 个数据块大小的比值，其中 1 个数据块大小为 512 字节。
 
@@ -353,12 +363,34 @@ USER TTY FROM LOGIN@ IDLE JCPU PCPU WHAT
 - `PCPU` ：用户当前执行的命令所占用的 CPU 运时。
 - `WHAT` ：用户当前执行的命令名称。`-bash` 表示没有当前执行的命令。
 
+## 压缩解压命令
+```
+gzip param
+gzip -1 param
+gzip -9 param
+gzip -d param
+gzip -f param
+gzip -df param
+gzip -r param/
+gzip -dr param/
+gzip -k param
+gzip -dk param
+gunzip param
+gunzip -f param
+gunzip -r param/
+gunzip -k param
+```
+- `gzip` ：把 `param` 文件压缩为 `.gz` 格式，并后缀相应的扩展名。`param` 可以有多个，此时分别对每个文件进行压缩。默认不会对**软链接**进行压缩。
+  - `-1` / `-9` ：让压缩速度尽可能快 / 慢，让压缩比率尽可能低 / 高。`1` ~ `9` 之间的任何一个整数也可以作为选项，压缩效果在二者之间的相应位置。
+  - `-d` ：若启用，则改为对 `param` 文件（需为 `.gz` 格式）进行解压，并恢复压缩前的文件名。`param` 可以有多个，此时分别对每个文件进行解压。
+  - `-f` ：覆盖同名旧文件（如果存在）。若**不启用**，如果压缩 / 解压后的文件名已在相同路径下存在，则不会对该文件执行命令；若**启用**，则对**软链接**也会进行压缩。
+  - `-r` ：若启用，则改为遍历 `param` **目录**（递归地包括各个**下级目录**）中的所有文件，分别对每个文件进行压缩 / 解压。
+  - `-k` ：若**启用**，则先对 `param` 文件进行备份，然后再对备份文件进行压缩 / 解压；若**不启用**，则**不会保留**压缩 / 解压前的文件。
+- `gunzip` ：执行 `gzip`，并启用选项 `-d`。
+
 ## TODO
 ```
 ◆压缩解压命令
-gzip    把param文件压缩为.gz格式。
--d      若启用，则改为执行：解压param.gz文件。
-gunzip  解压.gz格式的压缩文件。param为需要解压的文件。
 tar     创建.tar格式的打包文件[或解包.tar格式的文件]。
 -f      指定文件名。若启用（必须启用），则param1为打包后的文件名[或需要解包的.tar文件]。
 -c      创建.tar格式的打包文件。若启用，则param2为需要打包的目录。
