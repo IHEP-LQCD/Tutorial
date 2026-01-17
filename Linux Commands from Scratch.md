@@ -238,7 +238,7 @@ umask -S
 - `2` ：**写入权限**
 - `4` ：**读取权限**
 
-求和并按照**所有者 所属组 其他人**的顺序表示即可。例如：**ugo 格式**下的 `rwxrwxrwx` 转换为 **bin 格式**为 `777`，**ugo 格式**下的 `rw-r--r--` 转换为 **bin 格式**为 `644`。
+**求和**并按照**所有者 所属组 其他人**的顺序表示即可。例如：**ugo 格式**下的 `rwxrwxrwx` 转换为 **bin 格式**为 `777`，**ugo 格式**下的 `rw-r--r--` 转换为 **bin 格式**为 `644`。
 
 ### xor 格式
 即 **bin 格式**与 `777` 的异或。
@@ -248,12 +248,12 @@ umask -S
 find param/ opt "str"
 find param/ opt1 "str1" -a opt2 "str2"
 find param/ opt1 "str1" -o opt2 "str2"
-find param/ opt "str" -exec cmd opt params {}\;
-find param/ opt1 "str1" -a opt2 "str2" -exec cmd opt params {}\;
-find param/ opt1 "str1" -o opt2 "str2" -exec cmd opt params {}\;
-find param/ opt "str" -ok cmd opt params {}\;
-find param/ opt1 "str1" -a opt2 "str2" -ok cmd opt params {}\;
-find param/ opt1 "str1" -o opt2 "str2" -ok cmd opt params {}\;
+find param/ opt "str" -exec cmd opt params \;
+find param/ opt1 "str1" -a opt2 "str2" -exec cmd opt params \;
+find param/ opt1 "str1" -o opt2 "str2" -exec cmd opt params \;
+find param/ opt "str" -ok cmd opt params \;
+find param/ opt1 "str1" -a opt2 "str2" -ok cmd opt params \;
+find param/ opt1 "str1" -o opt2 "str2" -ok cmd opt params \;
 locate param
 locate -i param
 updatedb
@@ -264,30 +264,30 @@ grep -i "str" param
 grep -v "str" param
 grep -r "str" param/
 ```
-- `find` ：在 `param` **目录**下搜索满足 `str` 条件的文件。
-  - `-name` ：若启用，则 `str` 为文件名。
-  - `-iname` ：若启用 `-name`，但不区分大小写。
-  - `-size` ：若启用，则 `str` 为**文件大小**，按**数据块格式**（见下）。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
-  - `-type` ：若启用，则 `str` 为**文件类型**。用 `d` / `l` 表示**目录** / **软链接**，用 `f` 表示普通文件（文本文件或二进制文件）。
-  - `-user` ：若启用，则 `str` 为文件的**所有者**用户名。
-  - `-group` ：若启用，则 `str` 为文件的**所属组**名称。
-  - `-amin` ：若启用，则 `str` 为文件的最后访问时间距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
-  - `-cmin` ：若启用，则 `str` 为文件属性的最后更新时间距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
-  - `-mmin` ：若启用，则 `str` 为文件内容的最后修改时间距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
-  - `-inum` ：若启用，则 `str` 为文件的 **i 节点**编码。
+- `find` ：在 `param` **目录**下搜索满足 `str` 条件的文件，显示搜索到的所有文件。
+  - `-name` ：若启用，则 `str` 为待搜索的文件名，可以使用 `*` 作为通配符（匹配任意长度）。
+  - `-iname` ：启用 `-name` 选项，但不区分大小写。
+  - `-size` ：若启用，则 `str` 为待搜索的**文件大小**，按**数据块格式**（见下）。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
+  - `-type` ：若启用，则 `str` 为待搜索的**文件类型**。用 `d` / `l` 表示**目录** / **软链接**，用 `f` 表示普通文件（文本文件或二进制文件）。
+  - `-user` ：若启用，则 `str` 为待搜索文件的**所有者**用户名。
+  - `-group` ：若启用，则 `str` 为待搜索文件的**所属组**名称。
+  - `-amin` ：若启用，则 `str` 为待搜索文件的最后**访问**时间距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
+  - `-cmin` ：若启用，则 `str` 为待搜索文件的最后变更时间（指文件**属性**的变更）距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
+  - `-mmin` ：若启用，则 `str` 为待搜索文件的最后修改时间（指文件**内容**的修改）距离此刻的分钟数。可以使用前置字符 `+` / `-` 来表示大于 / 小于。
+  - `-inum` ：若启用，则 `str` 为待搜索文件的 **i 节点**编码。
   - `-a` ：在 `param` **目录**下搜索同时满足 `str1` 条件和 `str2` 条件的文件，`str1` 和 `str2` 的格式分别由 `opt1` 和 `opt2` 决定。
   - `-o` ：在 `param` **目录**下搜索满足 `str1` 条件和 `str2` 条件至少其一的文件，`str1` 和 `str2` 的格式分别由 `opt1` 和 `opt2` 决定。
-  - `-exec` ：在 `param` **目录**下搜索满足 `str` 条件的文件，并对搜索到的文件执行 `cmd opt params` 命令行。
-  - `-ok` ：在 `param` **目录**下搜索满足 `str` 条件的文件并弹出确认信息，确认后对搜索到的文件执行 `cmd opt params` 命令行。
-- `locate` ：在**资料库**中搜索 `param` 文件名。
+  - `-exec` ：在 `param` **目录**下搜索满足 `str` 条件的文件，并分别对搜索到的每个文件执行 `cmd opt params` 命令行，使用 `{}` 指代搜索到的文件（**相对路径**）。
+  - `-ok` ：在 `param` **目录**下搜索满足 `str` 条件的文件，并分别对搜索到的每个文件弹出确认信息，确认后对该文件执行 `cmd opt params` 命令行，使用 `{}` 指代搜索到的文件（**相对路径**）。
+- `locate` ：在**资料库**中搜索 `param` 文件名，可以使用 `*` 作为通配符（匹配任意长度）。
   - `-i` ：不区分大小写。
 - `updatedb` ：更新**资料库**。`params` 需为**空**。
 - `which` ：显示 `param` 命令的**路径**，同时显示命令别称。
 - `whereis` ：显示 `param` 命令或配置的**路径**，同时显示命令或配置的帮助路径。
-- `grep` ：在 `param` 文件中搜索关键词 `str` 所在行。
+- `grep` ：在 `param` 文件中搜索关键词 `str` 所在行，显示搜索到的所有行的内容和行号。
   - `-i` ：不区分大小写。
   - `-v` ：若启用，则改为在 `param` 文件中搜索关键词 `str` 所**不在**行。
-  - `-r` ：若启用，则改为遍历 `param` **目录**（递归地包括各个**下级目录**）中的所有文件，搜索关键词 `str` 所在行。
+  - `-r` ：若启用，则改为遍历 `param` **目录**（递归地包括各个**下级目录**）中的所有文件，搜索关键词 `str` 所在行，显示搜索到的所有行的内容和行号及其所在文件（**相对路径**）。
 ### 数据块格式
 即为**文件大小**与 1 个数据块大小的比值，其中 1 个数据块大小为 512 字节。
 
