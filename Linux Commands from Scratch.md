@@ -2,18 +2,17 @@
 
 ## 常见 Linux 版本
 ### 红帽系
-- Red Hat
-- CentOS
-- SuSE
-- Fedora
-- Gentoo Linux
-- 红旗 Linux
-- Mandriva
-- Turbolinux
+- <a href=https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux>Red Hat Enterprise Linux</a>
+- <a href=https://www.centos.org/download>CentOS Stream</a>
+- <a href=https://www.suse.com>SUSE Linux Enterprise Server</a>
+- <a href=https://fedoraproject.org/workstation>Fedora Workstation</a>
+- <a href=https://www.gentoo.org/downloads>Gentoo Linux</a>
+- <a href="https://www.chinaredflag.cn/product/newproduct?tolink=redflag-web/DT11">红旗 Linux 桌面操作系统</a>
+- <a href=https://www.openmandriva.org>OpenMandriva Lx</a>
 ### 其他常见版本
-- Ubuntu
-- Debian
-- KNOPPIX
+- <a href=https://ubuntu.com/download>Ubuntu</a>
+- <a href=https://www.debian.org/distrib>Debian</a>
+- <a href=https://www.knopper.net/knoppix-mirrors>KNOPPIX</a>
 
 ## 设备文件名
 ### 常见设备
