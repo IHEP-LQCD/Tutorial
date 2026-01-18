@@ -32,6 +32,7 @@
 - `/dev/usb/lp0` ：USB 打印机
 - `/dev/usb/lp15` ：USB 打印机
 - `/dev/mouse` ：鼠标
+- `/dev/null` ：空设备
 
 把 `/dev/sda` 中的最后一个字符换成 `a` ~ `p` 之间的任何一个小写字母，仍然是 SCSI / SATA / USB 硬盘的设备文件名。把 `/dev/usb/lp0` 中的最后一个字符换成 `0` ~ `15` 之间的任何一个整数，仍然是 USB 打印机的设备文件名。
 
